@@ -10,16 +10,16 @@ const theme = createTheme({
     primaryColor: "main",
     colors: {
         main: [
-            "#d8ebee", // Main BG
+            "#F8F4F0", // Main BG
             "#5FCCDB",
             "#44CADC",
             "#2AC9DE",
             "#1AC2D9",
             "#11B7CD",
-            "#629aa1", // Button
-            "#0E99AC",
-            "#3c4e52", // Navbar
-            "#041a1d", // Header
+            "#626260", // Button
+            "#91918e", // Button Highlight
+            "#868684", // Navbar
+            "#626260", // Header
         ],
     },
 });
