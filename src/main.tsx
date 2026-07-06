@@ -5,6 +5,7 @@ import "./index.css";
 
 import { createTheme, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
+import AuthProvider from "./contexts/AuthProvider.tsx";
 
 const theme = createTheme({
     primaryColor: "main",
@@ -27,7 +28,9 @@ const theme = createTheme({
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
         <MantineProvider theme={theme}>
-            <App />
+            <AuthProvider>
+                <App />
+            </AuthProvider>
         </MantineProvider>
     </StrictMode>,
 );
