@@ -1,8 +1,67 @@
-import { Button, Container, Flex } from "@mantine/core";
+import {
+    Button,
+    Container,
+    Flex,
+    Radio,
+    Stack,
+    Text,
+    useMatches,
+} from "@mantine/core";
+import { useState } from "react";
+import classes from "../Demo.module.css";
 
 const StoryPage = () => {
+    const [optionValue, setOptionValue] = useState<string | null>(null);
+
+    const options = [
+        {
+            content: "Go through the left door.",
+        },
+        {
+            content: "Investigate the room for clues.",
+        },
+        {
+            content: "Enter the hallway",
+        },
+    ];
+
+    const containerPx = useMatches({
+        sm: 0,
+        md: 100,
+    });
+
+    const optionBr = "12";
+
+    const optionCards = options.map((item, index) => (
+        <Radio.Card
+            className={classes.root + " card"}
+            value={item.content}
+            key={item.content}
+            style={{
+                outline: "black solid 1px",
+                borderRadius:
+                    index == 0
+                        ? options.length == 1
+                            ? `${optionBr}px ${optionBr}px ${optionBr}px ${optionBr}px`
+                            : `${optionBr}px ${optionBr}px 0px 0px`
+                        : index == options.length - 1
+                          ? `0px 0px ${optionBr}px ${optionBr}px`
+                          : `0px`,
+            }}
+        >
+            <div style={{ padding: "7px" }}>
+                <Radio.Indicator
+                    style={{ float: "left", margin: "2px 7px 0 0" }}
+                />
+                <div>
+                    <Text>{item.content}</Text>
+                </div>
+            </div>
+        </Radio.Card>
+    ));
+
     return (
-        <Container>
+        <Container px={containerPx}>
             <Flex
                 justify='center'
                 mt='md'
@@ -51,7 +110,13 @@ const StoryPage = () => {
                     per conubia nostra inceptos himenaeos.
                 </div>
 
-                <div>Choices</div>
+                <Radio.Group
+                    value={optionValue}
+                    onChange={setOptionValue}
+                    w='100%'
+                >
+                    <Stack gap='0'>{optionCards}</Stack>
+                </Radio.Group>
                 <Button>Submit</Button>
             </Flex>
         </Container>

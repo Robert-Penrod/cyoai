@@ -60,7 +60,7 @@ function App() {
                 c='white'
                 p='sm'
             >
-                Navbar
+                STORIES
             </AppShell.Navbar>
 
             <AppShell.Main style={{ backgroundColor: useTheme.colors.main[0] }}>

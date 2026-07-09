@@ -23,6 +23,13 @@ const theme = createTheme({
             "#626260", // Header
         ],
     },
+
+    fontSizes: {
+        sm: "14px",
+        md: "18px",
+        lg: "24px",
+        xl: "32px",
+    },
 });
 
 createRoot(document.getElementById("root")!).render(
