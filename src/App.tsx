@@ -2,8 +2,10 @@ import { AppShell, Avatar, Burger, Flex, useMantineTheme } from "@mantine/core";
 import { useState } from "react";
 import { GiMagicGate } from "react-icons/gi";
 import { RiRobot2Fill } from "react-icons/ri";
+import { Route, Routes } from "react-router";
 import "./App.css";
-import { useAuth } from "./contexts/AuthProvider";
+import { useAuth } from "./data/contexts/AuthProvider";
+import HomePage from "./pages/HomePage";
 import SignInPage from "./pages/SignInPage";
 import StoryPage from "./pages/StoryPage";
 
@@ -47,7 +49,7 @@ function App() {
 
                     <Flex gap='xs' w='100%' align='center' justify='center'>
                         <RiRobot2Fill size={20} />
-                        <div>Artificial Adventure</div>
+                        <h2>Artificial Adventure</h2>
                         <GiMagicGate size={20} />
                     </Flex>
 
@@ -64,7 +66,14 @@ function App() {
             </AppShell.Navbar>
 
             <AppShell.Main style={{ backgroundColor: useTheme.colors.main[0] }}>
-                {(authUser ?? false) ? <StoryPage /> : <SignInPage />}
+                {(authUser ?? false) ? (
+                    <Routes>
+                        <Route path='/' element={<HomePage />} />
+                        <Route path='/story/:storyId' element={<StoryPage />} />
+                    </Routes>
+                ) : (
+                    <SignInPage />
+                )}
             </AppShell.Main>
         </AppShell>
     );

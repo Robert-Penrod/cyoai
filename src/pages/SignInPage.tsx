@@ -1,5 +1,5 @@
 import { Button, Container, Title, useMantineTheme } from "@mantine/core";
-import { useAuth } from "../contexts/AuthProvider";
+import { useAuth } from "../data/contexts/AuthProvider";
 import { signInAnonymously } from "../lib/supabase";
 
 const SignInPage = () => {
@@ -17,7 +17,9 @@ const SignInPage = () => {
 
     return (
         <Container style={{ textAlign: "center" }}>
-            <Title c={theme.colors.main[9]}>Sign In</Title>
+            <Title c={theme.colors.main[9]} mb='xl'>
+                Sign In
+            </Title>
             <Button onClick={handleSignIn}>Sign In Anonymously</Button>
         </Container>
     );

@@ -2,28 +2,24 @@ import {
     Button,
     Container,
     Flex,
+    Group,
     Radio,
     Stack,
     Text,
     useMatches,
 } from "@mantine/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import classes from "../Demo.module.css";
+import { getAiClient } from "../lib/aiClient";
 
 const StoryPage = () => {
-    const [optionValue, setOptionValue] = useState<string | null>(null);
+    const [options, setOptions] = useState<string[]>([]);
+    const [selectedOption, setSelectedOption] = useState<string | null>(null);
+    const [content, setContent] = useState<string>("");
 
-    const options = [
-        {
-            content: "Go through the left door.",
-        },
-        {
-            content: "Investigate the room for clues.",
-        },
-        {
-            content: "Enter the hallway",
-        },
-    ];
+    useEffect(() => {
+        setContent("Story Start.");
+    }, []);
 
     const containerPx = useMatches({
         sm: 0,
@@ -32,11 +28,11 @@ const StoryPage = () => {
 
     const optionBr = "12";
 
-    const optionCards = options.map((item, index) => (
+    const optionCards = options.map((option, index) => (
         <Radio.Card
             className={classes.root + " card"}
-            value={item.content}
-            key={item.content}
+            value={option}
+            key={option}
             style={{
                 outline: "black solid 1px",
                 borderRadius:
@@ -54,14 +50,24 @@ const StoryPage = () => {
                     style={{ float: "left", margin: "2px 7px 0 0" }}
                 />
                 <div>
-                    <Text>{item.content}</Text>
+                    <Text>{option}</Text>
                 </div>
             </div>
         </Radio.Card>
     ));
 
+    const continueStory = () => {
+        getAiClient()
+            .generateStory(null, "Initial choice")
+            .then((page) => {
+                setContent((state) => state + "\n\n" + page.content);
+                setOptions(page.options);
+                setSelectedOption(null);
+            });
+    };
+
     return (
-        <Container px={containerPx}>
+        <Container px={containerPx} style={{ whiteSpace: "pre-wrap" }}>
             <Flex
                 justify='center'
                 mt='md'
@@ -69,55 +75,21 @@ const StoryPage = () => {
                 align='center'
                 gap='xl'
             >
-                <div>
-                    Lorem ipsum dolor sit amet consectetur adipiscing elit.
-                    Quisque faucibus ex sapien vitae pellentesque sem placerat.
-                    In id cursus mi pretium tellus duis convallis. Tempus leo eu
-                    aenean sed diam urna tempor. Pulvinar vivamus fringilla
-                    lacus nec metus bibendum egestas. Iaculis massa nisl
-                    malesuada lacinia integer nunc posuere. Ut hendrerit semper
-                    vel class aptent taciti sociosqu. Ad litora torquent per
-                    conubia nostra inceptos himenaeos. Lorem ipsum dolor sit
-                    amet consectetur adipiscing elit. Quisque faucibus ex sapien
-                    vitae pellentesque sem placerat. In id cursus mi pretium
-                    tellus duis convallis. Tempus leo eu aenean sed diam urna
-                    tempor. Pulvinar vivamus fringilla lacus nec metus bibendum
-                    egestas. Iaculis massa nisl malesuada lacinia integer nunc
-                    posuere. Ut hendrerit semper vel class aptent taciti
-                    sociosqu. Ad litora torquent per conubia nostra inceptos
-                    himenaeos. Lorem ipsum dolor sit amet consectetur adipiscing
-                    elit. Quisque faucibus ex sapien vitae pellentesque sem
-                    placerat. In id cursus mi pretium tellus duis convallis.
-                    Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus
-                    fringilla lacus nec metus bibendum egestas. Iaculis massa
-                    nisl malesuada lacinia integer nunc posuere. Ut hendrerit
-                    semper vel class aptent taciti sociosqu. Ad litora torquent
-                    per conubia nostra inceptos himenaeos. Lorem ipsum dolor sit
-                    amet consectetur adipiscing elit. Quisque faucibus ex sapien
-                    vitae pellentesque sem placerat. In id cursus mi pretium
-                    tellus duis convallis. Tempus leo eu aenean sed diam urna
-                    tempor. Pulvinar vivamus fringilla lacus nec metus bibendum
-                    egestas. Iaculis massa nisl malesuada lacinia integer nunc
-                    posuere. Ut hendrerit semper vel class aptent taciti
-                    sociosqu. Ad litora torquent per conubia nostra inceptos
-                    himenaeos. Lorem ipsum dolor sit amet consectetur adipiscing
-                    elit. Quisque faucibus ex sapien vitae pellentesque sem
-                    placerat. In id cursus mi pretium tellus duis convallis.
-                    Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus
-                    fringilla lacus nec metus bibendum egestas. Iaculis massa
-                    nisl malesuada lacinia integer nunc posuere. Ut hendrerit
-                    semper vel class aptent taciti sociosqu. Ad litora torquent
-                    per conubia nostra inceptos himenaeos.
-                </div>
+                <div>{content}</div>
 
-                <Radio.Group
-                    value={optionValue}
-                    onChange={setOptionValue}
-                    w='100%'
-                >
-                    <Stack gap='0'>{optionCards}</Stack>
-                </Radio.Group>
-                <Button>Submit</Button>
+                <Group style={{ width: "100%" }} gap='lg'>
+                    <Radio.Group
+                        value={selectedOption}
+                        onChange={setSelectedOption}
+                        w='100%'
+                        mb={0}
+                    >
+                        <Stack gap='0'>{optionCards}</Stack>
+                    </Radio.Group>
+                    <Button onClick={continueStory} w='100%' m={0}>
+                        Next
+                    </Button>
+                </Group>
             </Flex>
         </Container>
     );

@@ -5,7 +5,8 @@ import "./index.css";
 
 import { createTheme, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
-import AuthProvider from "./contexts/AuthProvider.tsx";
+import { BrowserRouter } from "react-router";
+import AuthProvider from "./data/contexts/AuthProvider.tsx";
 
 const theme = createTheme({
     primaryColor: "main",
@@ -25,10 +26,18 @@ const theme = createTheme({
     },
 
     fontSizes: {
-        sm: "14px",
+        sm: "16px",
         md: "18px",
         lg: "24px",
         xl: "32px",
+    },
+    headings: {
+        sizes: {
+            h1: { fontSize: "32px" },
+            h2: { fontSize: "24px" },
+            h3: { fontSize: "18px" },
+            h4: { fontSize: "14px" },
+        },
     },
 });
 
@@ -36,7 +45,9 @@ createRoot(document.getElementById("root")!).render(
     <StrictMode>
         <MantineProvider theme={theme}>
             <AuthProvider>
-                <App />
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
             </AuthProvider>
         </MantineProvider>
     </StrictMode>,
