@@ -9,17 +9,16 @@ import {
     useMatches,
 } from "@mantine/core";
 import { useEffect, useState } from "react";
-import type { Page } from "../data/contexts/storyData";
 import classes from "../Demo.module.css";
 import { getAiClient } from "../lib/aiClient";
 
 const StoryPage = () => {
-    const [pageData, setPageData] = useState<Page | null>(null);
+    const [options, setOptions] = useState<string[]>([]);
+    const [selectedOption, setSelectedOption] = useState<string | null>(null);
+    const [content, setContent] = useState<string>("");
 
     useEffect(() => {
-        setPageData({
-            content: "Story Start.",
-        });
+        setContent("Story Start.");
     }, []);
 
     const containerPx = useMatches({
@@ -29,7 +28,7 @@ const StoryPage = () => {
 
     const optionBr = "12";
 
-    const optionCards = pageData?.options?.map((option, index) => (
+    const optionCards = options.map((option, index) => (
         <Radio.Card
             className={classes.root + " card"}
             value={option}
@@ -38,10 +37,10 @@ const StoryPage = () => {
                 outline: "black solid 1px",
                 borderRadius:
                     index == 0
-                        ? pageData.options?.length == 1
+                        ? options.length == 1
                             ? `${optionBr}px ${optionBr}px ${optionBr}px ${optionBr}px`
                             : `${optionBr}px ${optionBr}px 0px 0px`
-                        : index == (pageData.options?.length ?? 0) - 1
+                        : index == options.length - 1
                           ? `0px 0px ${optionBr}px ${optionBr}px`
                           : `0px`,
             }}
@@ -61,7 +60,9 @@ const StoryPage = () => {
         getAiClient()
             .generateStory(null, "Initial choice")
             .then((page) => {
-                setPageData(page);
+                setContent((state) => state + "\n\n" + page.content);
+                setOptions(page.options);
+                setSelectedOption(null);
             });
     };
 
@@ -74,18 +75,12 @@ const StoryPage = () => {
                 align='center'
                 gap='xl'
             >
-                <div style={{ width: "100%" }}>{pageData?.content}</div>
+                <div>{content}</div>
 
                 <Group style={{ width: "100%" }} gap='lg'>
                     <Radio.Group
-                        value={pageData?.selectedOption}
-                        onChange={(value: string) =>
-                            setPageData((prev) =>
-                                prev
-                                    ? { ...prev, selectedOption: value }
-                                    : prev,
-                            )
-                        }
+                        value={selectedOption}
+                        onChange={setSelectedOption}
                         w='100%'
                         mb={0}
                     >
