@@ -3,8 +3,8 @@ export interface Story {
 }
 export interface Page {
     content: string;
-    options: string[];
-    selectedOption: string | null;
+    options?: string[];
+    selectedOption?: string | null;
 }
 
 let story: Story | null = null;
