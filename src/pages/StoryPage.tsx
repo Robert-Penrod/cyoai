@@ -11,7 +11,6 @@ import {
 import { useEffect, useState } from "react";
 import type { Page } from "../data/contexts/storyData";
 import classes from "../Demo.module.css";
-import { getAiClient } from "../lib/aiClient";
 
 const StoryPage = () => {
     const [pageData, setPageData] = useState<Page | null>(null);
@@ -57,13 +56,7 @@ const StoryPage = () => {
         </Radio.Card>
     ));
 
-    const continueStory = () => {
-        getAiClient()
-            .generateStory(null, "Initial choice")
-            .then((page) => {
-                setPageData(page);
-            });
-    };
+    const continueStory = () => {};
 
     return (
         <Container px={containerPx} style={{ whiteSpace: "pre-wrap" }}>
