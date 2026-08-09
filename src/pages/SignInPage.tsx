@@ -4,14 +4,13 @@ import { signInAnonymously } from "../lib/supabase";
 
 const SignInPage = () => {
     const theme = useMantineTheme();
-    const { authUser, setAuthUser, isSignedIn, setIsSignedIn } = useAuth();
+    const { authUser, setAuthUser } = useAuth();
 
     const handleSignIn = async () => {
         console.log("Signing in anonymously...");
-        signInAnonymously().then((data) => {
-            console.log("Signed in anonymously:", data);
-            setAuthUser(data);
-            setIsSignedIn(true);
+        signInAnonymously().then((authResponse) => {
+            console.log("Signed in anonymously:", authResponse);
+            setAuthUser(authResponse?.data?.user ?? null);
         });
     };
 

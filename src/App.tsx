@@ -1,5 +1,5 @@
 import { AppShell, Avatar, Burger, Flex, useMantineTheme } from "@mantine/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GiMagicGate } from "react-icons/gi";
 import { RiRobot2Fill } from "react-icons/ri";
 import { Route, Routes } from "react-router";
@@ -14,7 +14,12 @@ function App() {
     const toggle = () => setOpened(!opened);
     const useTheme = useMantineTheme();
 
-    const { authUser, setAuthUser, isSignedIn, setIsSignedIn } = useAuth();
+    const { authUser, setAuthUser, isSignedIn } = useAuth();
+
+    useEffect(() => {
+        console.log("APP.tsx useEffect");
+        console.log(authUser);
+    }, [authUser]);
 
     return (
         <AppShell
@@ -37,7 +42,7 @@ function App() {
                 }}
             >
                 <Flex align='center' justify='space-between' h='100%' px='md'>
-                    {(authUser ?? false) && (
+                    {isSignedIn && (
                         <Burger
                             opened={opened}
                             onClick={toggle}
@@ -53,7 +58,7 @@ function App() {
                         <GiMagicGate size={20} />
                     </Flex>
 
-                    {(authUser ?? false) && <Avatar />}
+                    {isSignedIn && <Avatar />}
                 </Flex>
             </AppShell.Header>
 
@@ -66,7 +71,7 @@ function App() {
             </AppShell.Navbar>
 
             <AppShell.Main style={{ backgroundColor: useTheme.colors.main[0] }}>
-                {(authUser ?? false) ? (
+                {isSignedIn ? (
                     <Routes>
                         <Route path='/' element={<HomePage />} />
                         <Route path='/story/:storyId' element={<StoryPage />} />

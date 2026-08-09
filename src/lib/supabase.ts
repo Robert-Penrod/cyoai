@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
+import { type AuthResponse, createClient } from "@supabase/supabase-js";
 import type { Page } from "../data/contexts/storyData";
 
 const supabase = createClient(
@@ -6,7 +6,7 @@ const supabase = createClient(
     import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
 );
 
-export const signInAnonymously = async () => {
+export const signInAnonymously = async (): Promise<AuthResponse> => {
     const data = await supabase.auth.signInAnonymously();
     return data;
 };

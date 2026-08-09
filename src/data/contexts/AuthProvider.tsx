@@ -1,3 +1,4 @@
+import type { User } from "@supabase/supabase-js";
 import { createContext, useContext, useState } from "react";
 
 const AuthContext = createContext(null as any);
@@ -11,14 +12,13 @@ export default function AuthProvider({
 }: {
     children: React.ReactNode;
 }) {
-    const [authUser, setAuthUser] = useState(null);
-    const [isSignedIn, setIsSignedIn] = useState(false);
+    const [authUser, setAuthUser] = useState<User>();
+    const isSignedIn = authUser != null;
 
     const value = {
         authUser,
         setAuthUser,
         isSignedIn,
-        setIsSignedIn,
     };
 
     return (
