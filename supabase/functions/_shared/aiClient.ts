@@ -13,10 +13,11 @@ export interface Page {
 
 export interface AiClient {
   generateStory(story: Story | null, choice: string): Promise<object>;
+  generateStoryStream(story: Story | null, choice: string): ReadableStream;
 }
 
 export function getAiClient() {
-  return claudAIClient;
+  return mockAIClient;
 }
 
 const claudAIClient: AiClient = {
@@ -71,6 +72,9 @@ const claudAIClient: AiClient = {
       });
     });
   },
+  generateStoryStream(story, choice) {
+    return new ReadableStream();
+  },
 };
 
 const mockAIClient: AiClient = {
@@ -94,5 +98,8 @@ const mockAIClient: AiClient = {
           });
         });
     });
+  },
+  generateStoryStream(story, choice) {
+    return new ReadableStream();
   },
 };

@@ -5,7 +5,7 @@
 // Setup type definitions for built-in Supabase Runtime APIs
 import "@supabase/functions-js/edge-runtime.d.ts";
 import { withSupabase } from "@supabase/server";
-import { getAiClient } from "./aiClient.ts";
+import { getAiClient } from "../_shared/aiClient.ts";
 
 console.log("Hello from Functions!");
 
