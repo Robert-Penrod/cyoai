@@ -11,6 +11,7 @@ import {
 import { useEffect, useState } from "react";
 import type { Page } from "../data/contexts/storyData";
 import classes from "../Demo.module.css";
+import { generateStoryPage } from "../lib/supabase";
 
 const StoryPage = () => {
     const [pageData, setPageData] = useState<Page | null>(null);
@@ -56,7 +57,11 @@ const StoryPage = () => {
         </Radio.Card>
     ));
 
-    const continueStory = () => {};
+    const continueStory = () => {
+        generateStoryPage().then((generatedPage) => {
+            setPageData(generatedPage);
+        });
+    };
 
     return (
         <Container px={containerPx} style={{ whiteSpace: "pre-wrap" }}>

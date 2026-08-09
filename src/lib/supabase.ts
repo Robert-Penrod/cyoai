@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import type { Page } from "../data/contexts/storyData";
 
 const supabase = createClient(
     import.meta.env.VITE_SUPABASE_URL,
@@ -8,4 +9,14 @@ const supabase = createClient(
 export const signInAnonymously = async () => {
     const data = await supabase.auth.signInAnonymously();
     return data;
+};
+
+export const generateStoryPage = async () => {
+    const { data, error } = await supabase.functions.invoke(
+        "generate-story-page",
+    );
+
+    return {
+        content: data.content,
+    } as Page;
 };

@@ -27,7 +27,7 @@ export default {
     }
     */
 
-    const { name } = await req.json();
+    //const { name } = await req.json();
 
     const aiClient = getAiClient();
     const returnedPage = await aiClient.generateStory(null, "");
