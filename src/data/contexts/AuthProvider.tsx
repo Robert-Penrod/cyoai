@@ -13,7 +13,7 @@ export default function AuthProvider({
     children: React.ReactNode;
 }) {
     const [authUser, setAuthUser] = useState<User>();
-    const isSignedIn = authUser != null;
+    const isSignedIn = true; // authUser != null;
 
     const value = {
         authUser,

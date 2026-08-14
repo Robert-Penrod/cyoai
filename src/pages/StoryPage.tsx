@@ -11,7 +11,6 @@ import {
 import { useEffect, useState } from "react";
 import type { Page } from "../data/contexts/storyData";
 import classes from "../Demo.module.css";
-import { generateStoryPage } from "../lib/supabase";
 
 const StoryPage = () => {
     const [pageData, setPageData] = useState<Page | null>(null);
@@ -57,10 +56,31 @@ const StoryPage = () => {
         </Radio.Card>
     ));
 
-    const continueStory = () => {
+    const continueStory = async () => {
+        setPageData({ content: "", options: [] });
+
+        const response = await fetch(
+            "http://localhost:3000/story/generate-page-stream",
+        );
+        if (response.body == null) return;
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            const string = decoder.decode(value, { stream: true });
+            setPageData((prev) => ({
+                ...prev,
+                content: (prev?.content ?? "") + string,
+            }));
+            console.log(string);
+        }
+        /*
         generateStoryPage().then((generatedPage) => {
             setPageData(generatedPage);
         });
+        */
     };
 
     return (
